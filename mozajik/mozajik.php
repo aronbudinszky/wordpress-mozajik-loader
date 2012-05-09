@@ -8,6 +8,8 @@ Author: Aron Budinszky <aron@mozajik.org>
 Author URI: http://www.mozajik.org/
 License: GPL2
 @todo Add header template setting.
+@todo Add option to turn javascripts on or off.
+@todo Add option to load up mootools or jquery version.
 */
 
 /**
@@ -50,6 +52,8 @@ function mozajik_init(){
 		if(!empty($options['init_controller']) && preg_match("/^[A-z\/_]+$/", $options['init_controller'])){
 			$value = $GLOBALS['zajlib']->reroute($options['init_controller']);
 		}
+	// If base url set, override my own
+		if(!empty($options['base_url'])) $GLOBALS['zajlib']->baseurl = $options['base_url'];
 	// Now turn off autoloading
 		$GLOBALS['zajlib']->model_autoloading = false;
 	return $value;
@@ -60,7 +64,16 @@ add_action('init', 'mozajik_init');
  * This generates the includes for css, js, and other stuff needed for Mozajik to run properly.
  **/
 function mozajik_head(){
-	//print "Superdooper!";
+	// Check if loaded properly
+		if(!is_object($GLOBALS['zajlib'])){ echo "Mozajik failed to load up. Don't forget the proper settings in the admin panel!"; return false; }	
+	// Load up javascript files
+		echo '<script language="JavaScript" src="'.$GLOBALS['zajlib']->baseurl.'system/js/mootools/mootools-core-1.3.js" type="text/javascript"></script>';
+		echo '<script language="JavaScript" src="'.$GLOBALS['zajlib']->baseurl.'system/js/mootools/mootools-more-1.3.js" type="text/javascript"></script>';
+		echo '<script language="JavaScript" src="'.$GLOBALS['zajlib']->baseurl.'system/js/mozajik-base-1.3.js?v2" type="text/javascript"></script>';
+	// Now load up my {{zaj.js}} variable to initialize Mozajik
+		$zaj = $GLOBALS['zajlib']->template->get_variables();
+		echo $zaj->js;
+	return true;
 }
 add_action('wp_head', 'mozajik_head');
 

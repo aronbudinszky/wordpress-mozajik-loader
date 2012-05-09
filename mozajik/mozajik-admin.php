@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * This file registers the admin interface for Mozajik Loader.
+ **/
 
 function mozajik_menu() {
 	add_options_page( 'Mozajik Loader Settings', 'Mozajik Loader', 'manage_options', 'mozajik-loader-settings', 'mozajik_menu_settings' );
