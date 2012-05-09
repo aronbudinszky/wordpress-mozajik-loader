@@ -38,3 +38,5 @@ Once the plugin has been setup and loaded properly you will be able to use the f
 	<?php mozajik_insert($template_path = 'base.html', $block_name = false); ?>
 
 The Mozajik javascript files required for Mozajik-based ajax requests are also included, so you can use the usual syntax. For this to work properly, the Base URL setting must be correctly set up!
+
+*Important: you must use the latest SVN version of Mozajik for this to work properly.*
