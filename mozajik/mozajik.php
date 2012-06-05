@@ -32,22 +32,17 @@ function mozajik_init(){
 		if(empty($options['install_path']) || !preg_match("/^[A-z\/.]+$/", $options['install_path'])) return false;
 	// Validate Mozajik path
 		if(!file_exists($options['install_path'].'site/index.php')) return false;
+		
 	// My init vars need to be in global scope!
-		global 	$debug_mode, $debug_mode_domains, $zaj_root_folder, $zaj_site_folder,
-				$zaj_default_app, $zaj_default_mode, $zaj_plugin_apps, $zaj_system_apps,
-				$zaj_mysql_enabled, $zaj_mysql_server, $zaj_mysql_user, $zaj_mysql_password,
-				$zaj_mysql_db, $zaj_mysql_ignore_tables, 
-				$zaj_update_enabled, $zaj_update_appname, $zaj_update_user, $zaj_update_password,
-				$zaj_error_log_enabled, $zaj_error_log_notices, $zaj_error_log_backtrace, 
-				$zaj_error_log_file, $zaj_jserror_log_enabled, $zaj_jserror_log_file,
-				$zaj_locale, $zaj_config_file_version, $zajlib;
-				// API access keys not included here.
+		global $zajconf, $zajlib;
 	// Set to include mode (include mode disables js log messages and the exit() in Mozajik)
 		$zaj_include_mode = true;
 	// Fake a proper htaccess version request
 		$_REQUEST['zajhtver'] = 10000;
 	// Load up my index.php for Mozajik
 		include_once($options['install_path'].'site/index.php');
+	// Check if old config file
+		if(!is_array($zajconf)){ echo "Mozajik failed to load up. Please use version 305 or higher config file!"; return false; }
 	// If I have an init controller, reroute to it now!
 		if(!empty($options['init_controller']) && preg_match("/^[A-z\/_]+$/", $options['init_controller'])){
 			$value = $GLOBALS['zajlib']->reroute($options['init_controller']);
